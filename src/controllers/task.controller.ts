@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AuthRequest } from "../middleware";
 import Task from "../models/task-model";
 import { ITask } from "../types";
+import { request } from "http";
 
 export const getAllTask = async (request: AuthRequest, response: Response) => {
   try {
@@ -32,6 +33,28 @@ export const createTask = async (request: AuthRequest, response: Response) => {
   } catch (error) {
     console.log("error creating task", error);
     response.send({ error: "error whiles creating task" });
+    throw error;
+  }
+};
+
+export const toggleTaskStatus = async (
+  request: AuthRequest,
+  response: Response
+) => {
+  try {
+    const { isCompleted } = request.body;
+    const { id } = request.params;
+
+    const task = await Task.updateOne(
+      { _id: id },
+      {
+        isCompleted,
+      }
+    );
+    response.send({message:"Toggle status updated"});
+  } catch (error) {
+    console.log("error getting status", error);
+    response.send({ error: "Error while toggling status task" });
     throw error;
   }
 };
