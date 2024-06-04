@@ -24,3 +24,13 @@ export interface ICategory {
   color: IColor;
   icon: IICon;
 }
+
+
+export interface ITask {
+  _id: string
+  name: string
+  isCompleted: boolean
+  categoryId: string
+  createdAt: string
+  date: string
+}

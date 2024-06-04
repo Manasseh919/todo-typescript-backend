@@ -13,12 +13,16 @@ const taskSchema = new mongoose.Schema(
       ref: "Category",
     },
     name: {
-      type: Boolean,
+      type: String,
       required: true,
     },
     isCompleted: {
       type: Boolean,
-      required: true,
+      default:false
+    },
+    isEditable: {
+      type: Boolean,
+      default:false
     },
     date: {
       type: String,
