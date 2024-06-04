@@ -43,19 +43,37 @@ export const getAllTasksByCategory = async (
   response: Response
 ) => {
   try {
-    const userId = request.user
-    const { id } = request.params
+    const userId = request.user;
+    const { id } = request.params;
     const tasks = await Task.find({
       user: userId,
       categoryId: id,
-    })
-    response.send(tasks)
+    });
+    response.send(tasks);
   } catch (error) {
-    console.log("error in getAllTasksByCategory", error)
-    response.send({ error: "Error while fetching tasks" })
-    throw error
+    console.log("error in getAllTasksByCategory", error);
+    response.send({ error: "Error while fetching tasks" });
+    throw error;
   }
-}
+};
+
+export const getAllComletedTask = async (
+  request: AuthRequest,
+  response: Response
+) => {
+  try {
+    const userId = request.user;
+    const tasks = await Task.find({
+      user: userId,
+      isCompleted: true,
+    });
+    response.send(tasks);
+  } catch (error) {
+    console.log("error getting all comleted task", error);
+    response.send({ error: "Error while fetching completed tasks" });
+    throw error;
+  }
+};
 
 export const toggleTaskStatus = async (
   request: AuthRequest,
