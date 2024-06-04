@@ -3,6 +3,7 @@ import { AuthRequest } from "../middleware";
 import Task from "../models/task-model";
 import { ITask } from "../types";
 import { request } from "http";
+import { error } from "console";
 
 export const getAllTask = async (request: AuthRequest, response: Response) => {
   try {
@@ -37,6 +38,25 @@ export const createTask = async (request: AuthRequest, response: Response) => {
   }
 };
 
+export const getAllTasksByCategory = async (
+  request: AuthRequest,
+  response: Response
+) => {
+  try {
+    const userId = request.user
+    const { id } = request.params
+    const tasks = await Task.find({
+      user: userId,
+      categoryId: id,
+    })
+    response.send(tasks)
+  } catch (error) {
+    console.log("error in getAllTasksByCategory", error)
+    response.send({ error: "Error while fetching tasks" })
+    throw error
+  }
+}
+
 export const toggleTaskStatus = async (
   request: AuthRequest,
   response: Response
@@ -51,7 +71,7 @@ export const toggleTaskStatus = async (
         isCompleted,
       }
     );
-    response.send({message:"Toggle status updated"});
+    response.send({ message: "Toggle status updated" });
   } catch (error) {
     console.log("error getting status", error);
     response.send({ error: "Error while toggling status task" });
